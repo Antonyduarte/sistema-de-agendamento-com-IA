@@ -15,8 +15,8 @@ async function agendar(user_id, compromisso, data, hora) {
         intervalo
     )
 
-    if(agendaRepo.agendar)
-
+    // if(agendaRepo.agendar)
+    
     if(horarioExiste) {
         throw new Error(MESSAGES.TIME_CONFLICT)
     }

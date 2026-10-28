@@ -3,6 +3,7 @@ const { NOME_REGEX, EMAIL_REGEX } = require("../regex/regex")
 
 function verify(req, res, next) {
     const { nome, email, senha } = req.body
+    // ----------------------------------------------------------------
     //nome
     if(!nome || nome.trim() === "") {
         return res.status(400).json(responses.apiResponse(
@@ -16,6 +17,13 @@ function verify(req, res, next) {
             "O nome deve conter apenas letras, acentos e espaços"
         ))
     }
+    if(nome.length > 30) {
+        return res.status(400).json(responses.apiResponse(
+            false,
+            "O nome de usuário não pode conter mais de 30 caracteres"
+        ))
+    }
+    // ----------------------------------------------------------------
     //Email
     if(!email || email.trim() === "") {
         return res.status(400).json(responses.apiResponse(

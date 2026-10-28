@@ -15,7 +15,7 @@ const MESSAGES = {
     USER_NOT_FOUND: "USER_NOT_FOUND",
     INVALID_LOGIN: "INVALID_LOGIN",
     REGEX_MAIL: "Formato inválido de e-mail",
-    INVALID_PASSWORD: "Sua senha deve conter no mínimo 8 dígitos",
+    SENHA_LENGTH: "Sua senha deve conter no mínimo 8 dígitos",
 
     //INTERNAL SERVER ERROR
     INTERNAL_ERROR: "INTERNAL_ERROR",
