@@ -101,7 +101,11 @@ async function getAgenda(req, res) {
             ))
         }
 
-        return res.status(200).json(agenda)
+        return res.status(200).json(apiRes.apiResponse(
+            true,
+            "Agendamentos encontrados",
+            agenda
+        ))
     } catch (error) {
         return res.status(500).json(apiRes.apiResponse(
             false,
@@ -114,7 +118,11 @@ async function getAgenda(req, res) {
 async function getAllAgenda(req, res) {
     try {
         const agenda = await agendaService.getAllAgenda()
-        return res.status(200).json(agenda)
+        return res.status(200).json(apiRes.apiResponse(
+            true,
+            "Agendamentos encontrados",
+            agenda
+        ))
     } catch (error) {
         return res.status(500).json(apiRes.apiResponse(
             false,

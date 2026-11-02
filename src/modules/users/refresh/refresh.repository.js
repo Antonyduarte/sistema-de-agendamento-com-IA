@@ -2,14 +2,10 @@ const pool = require("../../../config/db/db")
 
 const connection = pool
 
-async function getRefreshToken(token) {
-    if (typeof token !== "string") {
-        throw new TypeError("Refresh token deve ser uma string")
-    }
+async function getRefreshTokens() {
+    const [rows] = await connection.query("SELECT * FROM refresh_tokens")
 
-    const [rows] = await connection.query("SELECT * FROM refresh_tokens WHERE token = ?", [token])
-
-    return rows[0]
+    return rows
 }
 
 // Busca o usuário relacionado ao refresh token para gerar um novo JWT.
@@ -37,9 +33,19 @@ async function deleteRefreshToken(token) {
     return rows
 }
 
+async function deleteRefreshTokenById(id) {
+    const [result] = await connection.query(
+        "DELETE FROM refresh_tokens WHERE id = ?",
+        [id]
+    )
+
+    return result
+}
+
 module.exports = {
-    getRefreshToken,
+    getRefreshTokens,
     getUserById,
     saveRefreshToken,
-    deleteRefreshToken
+    deleteRefreshToken,
+    deleteRefreshTokenById
 }

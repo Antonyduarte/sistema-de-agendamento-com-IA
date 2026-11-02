@@ -1,9 +1,9 @@
-function apiResponse(success, message, rows) {
+function apiResponse(success, message, data = null) {
     return {
         success: success,
         message: message,
-        rows: rows,
-        timestamp: new Date().getTime()
+        data: data,
+        timestamp: new Date().toISOString()
     }
 }
 

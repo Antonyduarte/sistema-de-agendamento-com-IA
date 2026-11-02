@@ -1,6 +1,7 @@
 require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
+const { apiResponse } = require("./utils/response/apiRes")
 
 const app = express()
 
@@ -12,10 +13,10 @@ app.use(express.static("public"))
 
 app.use((req, res, next) => {
     if (req.app.locals.systemAvailable === false) {
-        return res.status(503).json({
-            success: false,
-            message: "Servidor está offline"
-        })
+        return res.status(503).json(apiResponse(
+            false,
+            "Servidor está offline"
+        ))
     }  
 
     next()
