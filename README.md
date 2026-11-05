@@ -1,167 +1,131 @@
-# SaaS de Agendamento com IA
+# Sistema de Agendamento com IA
 
-Backend de uma plataforma de agendamentos construída com Node.js, Express e MySQL. A aplicação oferece autenticação, recuperação de senha, gerenciamento de agendamentos e permissões administrativas.
+API REST para agendamento de horários, feita com Node.js, Express e MySQL. Os usuários criam conta, fazem login e marcam horários; administradores conseguem ver e remover qualquer agendamento.
 
-> Status: em desenvolvimento. Ainda são necessários testes, melhorias de segurança e preparação para produção.
+O projeto está em desenvolvimento. A parte de IA que dá nome ao repositório ainda não foi implementada: hoje o código cobre autenticação e agendamento.
 
-## Funcionalidades
+## O que já funciona
 
-- Cadastro e login de usuários com JWT.
-- Refresh token, logout e recuperação de senha por e-mail.
-- Criação, consulta, edição e exclusão de agendamentos.
-- Consulta pública de horários disponíveis.
-- Rotas administrativas para consultar e excluir agendamentos.
-- Servir a interface estática presente em `public/`.
+- Cadastro e login com senha criptografada (bcrypt).
+- Access token JWT de 15 minutos e refresh token de 7 dias, com rotação a cada renovação e revogação no logout.
+- Recuperação de senha: um código de 6 dígitos é enviado por e-mail, vale por 15 minutos e só pode ser usado uma vez.
+- Criar, listar, editar e cancelar os próprios agendamentos.
+- Consulta pública de horários livres para uma data.
+- Rotas exclusivas de administrador.
+- Um job que roda a cada minuto e marca como `EXPIRED` os agendamentos que já passaram.
 
-## Tecnologias
+## Regras de agendamento
 
-Node.js · Express 5 · MySQL · mysql2 · bcrypt · JSON Web Token · Nodemailer · dotenv · CORS
+- Expediente das 09:00 às 18:00.
+- Intervalo mínimo de 35 minutos entre dois agendamentos, mesmo de usuários diferentes.
+- Não é possível agendar nem remarcar para um horário no passado.
+- Status possíveis: `PENDING`, `CONFIRMED`, `COMPLETED`, `CANCELED` e `EXPIRED`.
 
-## Requisitos
+Essas constantes ficam em `src/modules/agendamentos/agenda.service.js`.
 
-- Node.js e npm
-- MySQL
+## Como rodar
 
-## Instalação
+Você precisa de Node.js e de um MySQL 8 (os schemas usam a collation `utf8mb4_0900_ai_ci`).
 
 ```bash
-git clone https://github.com/Antonyduarte/SaaS-de-agendamento-com-IA.git
-cd SaaS-de-agendamento-com-IA
+git clone https://github.com/Antonyduarte/sistema-de-agendamento-com-ia.git
+cd sistema-de-agendamento-com-ia
 npm install
+cp .env.example .env
 ```
 
-Crie o arquivo `.env` a partir de `.env.example` e preencha os dados do banco, JWT, CORS e e-mail.
+Preencha o `.env`:
 
-## Variáveis de ambiente
+| Variável | Uso |
+| --- | --- |
+| `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS`, `DB_NAME` | Conexão com o MySQL |
+| `SERVER_PORT` | Porta da API (padrão 3000) |
+| `SECRET_KEY` | Chave de assinatura do JWT |
+| `CORS_ROUTE` | Origem permitida pelo CORS |
+| `MAIL_HOST`, `MAIL_PORT`, `MAIL_USER`, `MAIL_PASS` | SMTP para o envio dos códigos |
 
-```env
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASS=sua_senha
-DB_NAME=nome_do_banco
+O transporte de e-mail usa conexão segura (`secure: true`), então o normal é usar a porta 465.
 
-SERVER_PORT=3000
-SECRET_KEY=sua_chave_jwt
-CORS_ROUTE=http://localhost:3000
+Crie as tabelas rodando os arquivos de `src/config/schema/`, começando por `clientes.sql`, já que as outras dependem dela:
 
-MAIL_USER=seu_email
-MAIL_PASS=sua_senha_de_app
-MAIL_HOST=seu_host_smtp
-MAIL_PORT=587
+```text
+clientes.sql → agendamentos.sql → recovery_codes.sql → refresh_tokens.sql
 ```
 
-Nunca versione o arquivo `.env`.
-
-## Banco de dados
-
-Execute os scripts SQL de `src/config/schema/` no banco configurado:
-
-- `clientes.sql`
-- `agendamentos.sql`
-- `recovery_codes.sql`
-- `refresh_tokens.sql`
-
-## Execução
+Depois, inicie o servidor:
 
 ```bash
 node src/server.js
 ```
 
-Por padrão, a API fica disponível em `http://localhost:3000`. A pasta `public/` é servida pelo próprio Express.
+Não há scripts no `package.json` por enquanto. O Express também serve uma pasta `public/` se ela existir, mas ela não faz parte do repositório.
 
-## Arquitetura
-
-O código é organizado por módulos e camadas:
-
-```text
-Route → Controller → Service → Repository → Database
-```
-
-Os módulos principais estão em `src/modules/`:
+## Estrutura
 
 ```text
 src/
-├── config/       # Banco, e-mail e schemas SQL
-├── jobs/         # Tarefas automáticas
-├── middlewares/  # Autenticação, autorização e erros
-├── modules/      # Usuários e agendamentos
-├── utils/        # Validações e respostas
+├── config/        # banco, e-mail e schemas SQL
+├── jobs/          # expiração automática de agendamentos
+├── messages/      # mensagens de erro e sucesso
+├── middlewares/   # autenticação, permissão de admin e rota não encontrada
+├── modules/
+│   ├── agendamentos/
+│   └── users/     # login, register, refresh, forgotpassword, resetPassword
+├── utils/         # regex, validação do cadastro e formato de resposta
 ├── app.js
 └── server.js
 ```
 
-## API
+Cada módulo segue o fluxo route → controller → service → repository.
 
-Base URL: `http://localhost:3000`
+## Rotas
 
-### Autenticação
+Todas as respostas seguem o formato `{ success, message, data, timestamp }`. As rotas protegidas esperam o header `Authorization: Bearer <accessToken>`.
 
-| Método | Rota | Acesso |
+### Autenticação (`/auth`)
+
+| Método | Rota | Corpo |
 | --- | --- | --- |
-| `POST` | `/auth/register` | Público |
-| `POST` | `/auth/login` | Público |
-| `POST` | `/auth/forgot-password` | Público |
-| `PUT` | `/auth/reset-password` | Público |
-| `POST` | `/auth/refresh` | Público, com refresh token |
-| `POST` | `/auth/logout` | Público, com refresh token |
+| `POST` | `/auth/register` | `nome`, `email`, `senha` (mais de 8 caracteres) |
+| `POST` | `/auth/login` | `email`, `senha` |
+| `POST` | `/auth/refresh` | `refreshToken` |
+| `POST` | `/auth/logout` | `refreshToken` |
+| `POST` | `/auth/forgot-password` | `email` |
+| `PUT` | `/auth/reset-password` | `email`, `code`, `password` |
 
-Exemplo de cadastro:
+O login devolve `accessToken` e `refreshToken` em `data`.
 
-```json
-{
-  "nome": "Maria Silva",
-  "email": "maria@example.com",
-  "senha": "senhaSegura123"
-}
+### Agendamentos (`/agendamento`)
+
+| Método | Rota | Acesso | Descrição |
+| --- | --- | --- | --- |
+| `GET` | `/disponiveis?data=AAAA-MM-DD` | Público | Horários livres do dia |
+| `POST` | `/` | Logado | Cria um agendamento |
+| `GET` | `/` | Logado | Lista os seus agendamentos |
+| `PUT` | `/` | Logado | Altera data e hora |
+| `DELETE` | `/:id` | Logado | Remove um agendamento seu |
+| `GET` | `/admin` | Admin | Lista todos, com dados do cliente |
+| `DELETE` | `/admin/delete/:id` | Admin | Remove qualquer agendamento |
+
+Exemplos de corpo:
+
+```jsonc
+// POST /agendamento
+{ "compromisso": "Consulta", "data": "2026-12-10", "hora": "14:30" }
+
+// PUT /agendamento
+{ "id": 12, "data": "2026-12-11", "hora": "10:00" }
 ```
 
-O token de acesso deve ser enviado nas rotas protegidas:
+Não existe rota para promover alguém a administrador. Para isso, altere o campo `role` da tabela `clientes` direto no banco.
 
-```http
-Authorization: Bearer seu_token_jwt
-```
+## Pendências
 
-### Agendamentos
-
-| Método | Rota | Acesso |
-| --- | --- | --- |
-| `GET` | `/agendamento/disponiveis` | Público |
-| `POST` | `/agendamento` | Usuário autenticado |
-| `GET` | `/agendamento` | Usuário autenticado |
-| `PUT` | `/agendamento` | Usuário autenticado |
-| `DELETE` | `/agendamento/:id` | Usuário autenticado |
-| `GET` | `/agendamento/admin` | Administrador |
-| `DELETE` | `/agendamento/admin/delete/:id` | Administrador |
-
-Exemplo de agendamento:
-
-```json
-{
-  "nome": "Consulta",
-  "data": "2026-07-20",
-  "hora": "14:30:00"
-}
-```
-
-O intervalo entre horários é controlado pela regra de negócio do módulo de agendamentos.
-
-## Estado do projeto
-
-Implementado:
-
-- Arquitetura modular e conexão com MySQL.
-- Autenticação JWT com refresh token.
-- CRUD de agendamentos e autorização administrativa.
-- Recuperação e redefinição de senha com envio de e-mail.
-
-Próximos passos:
-
-- Adicionar testes automatizados e migrations.
-- Reforçar validações, rate limiting, logs e headers de segurança.
-- Padronizar erros e respostas da API.
-- Finalizar a integração com IA e preparar o deploy em produção.
+- Integração com IA.
+- Testes automatizados e migrations.
+- Rate limiting, logs e headers de segurança.
+- Deploy em produção.
 
 ## Licença
 
-ISC.
+ISC
