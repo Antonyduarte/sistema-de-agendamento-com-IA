@@ -1,5 +1,5 @@
-const mysql = require("mysql2")
-const pool = require("../../../config/db/db")
+import mysql from "mysql2"
+import pool from "../../../config/db/db.js"
 
 async function findByEmail(email){
     
@@ -52,4 +52,4 @@ async function setPasswordAndConsumeCode(newPassword, userId, recoveryCodeId) {
     }
 }
 
-module.exports  = { findByEmail, recentlyCode, setPasswordAndConsumeCode }
+export { findByEmail, recentlyCode, setPasswordAndConsumeCode }

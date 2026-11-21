@@ -1,6 +1,6 @@
-require("dotenv").config()
-const sql = require("mysql2")
-const pool = require("../../../config/db/db")
+import "dotenv/config"
+import sql from "mysql2"
+import pool from "../../../config/db/db.js"
 
 const connection = pool
 
@@ -17,4 +17,4 @@ async function userRegister(nome, email, senha) {
     return result[0] || null
 }
 
-module.exports = { findByEmail, userRegister }
+export { findByEmail, userRegister }

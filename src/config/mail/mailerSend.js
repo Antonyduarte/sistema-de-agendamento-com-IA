@@ -1,5 +1,5 @@
-require("dotenv").config();
-const transporter = require("./mail");
+import "dotenv/config"
+import transporter from "./mail.js"
 
 async function sendCode(userMail, code) {
   return transporter.sendMail({
@@ -16,4 +16,4 @@ async function sendCode(userMail, code) {
 //   text: "Seu código de verificação é ${code}",
 // });
 
-module.exports = { sendCode }
+export { sendCode }

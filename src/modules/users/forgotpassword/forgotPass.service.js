@@ -1,9 +1,9 @@
-const forgotRepo = require("./forgotPass.repository")
-const { randomInt } = require("crypto")
-const { MESSAGES } = require("../../../messages/messages")
-const mailer = require("../../../config/mail/mailerSend")
-const { EMAIL_REGEX } = require("../../../utils/regex/regex")
-const bcrypt = require("bcrypt")
+import * as forgotRepo from "./forgotPass.repository.js"
+import { randomInt } from "crypto"
+import { MESSAGES } from "../../../messages/messages.js"
+import * as mailer from "../../../config/mail/mailerSend.js"
+import { EMAIL_REGEX } from "../../../utils/regex/regex.js"
+import bcrypt from "bcrypt"
 
 // function generateCode()
 
@@ -35,4 +35,4 @@ async function recoveryCode(email) {
   return true
 }
 
-module.exports = { recoveryCode }
+export { recoveryCode }

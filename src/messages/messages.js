@@ -36,4 +36,4 @@ const MESSAGES = {
     EXPIRED_REFRESH_TOKEN: "Refresh token expirado"
 }
 
-module.exports = { MESSAGES }
+export { MESSAGES }

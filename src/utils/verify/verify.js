@@ -1,5 +1,5 @@
-const responses = require("../response/apiRes")
-const { NOME_REGEX, EMAIL_REGEX } = require("../regex/regex")
+import * as responses from "../response/apiRes.js"
+import { NOME_REGEX, EMAIL_REGEX } from "../regex/regex.js"
 
 function verify(req, res, next) {
     const { nome, email, senha } = req.body
@@ -49,4 +49,4 @@ function verify(req, res, next) {
     next()
 }
 
-module.exports = verify
+export default verify

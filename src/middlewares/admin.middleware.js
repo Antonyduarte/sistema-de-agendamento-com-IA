@@ -1,4 +1,4 @@
-const { apiResponse } = require("../utils/response/apiRes")
+import { apiResponse } from "../utils/response/apiRes.js"
 
 function adminMiddleware(req, res, next) {
     if (req.user?.role !== "admin") {
@@ -11,4 +11,4 @@ function adminMiddleware(req, res, next) {
     next()
 }
 
-module.exports = adminMiddleware
+export default adminMiddleware

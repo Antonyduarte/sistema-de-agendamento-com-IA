@@ -1,12 +1,12 @@
-const express = require("express").Router()
-const router = express
-const verify = require("../../../utils/verify/verify")
+import express from "express"
+const router = express.Router()
+import verify from "../../../utils/verify/verify.js"
 
-const loginController = require("../login/login.controller")
-const registerController = require("../register/register.controller")
-const { recoveryCode: forgotPassController } = require("../forgotpassword/forgotPass.controller")
-const resetPasswordController = require("../resetPassword/resetPassword.controller")
-const refreshTokenController = require("../refresh/refresh.controller")
+import loginController from "../login/login.controller.js"
+import registerController from "../register/register.controller.js"
+import { recoveryCode as forgotPassController } from "../forgotpassword/forgotPass.controller.js"
+import resetPasswordController from "../resetPassword/resetPassword.controller.js"
+import refreshTokenController from "../refresh/refresh.controller.js"
 
 router.post("/login", loginController) // endpoint de login 
 router.post("/register", verify, registerController) // endpoint de registro
@@ -17,5 +17,5 @@ router.put("/reset-password", resetPasswordController.setPassword)
 router.post("/refresh", refreshTokenController.refreshAccessToken)
 router.post("/logout", refreshTokenController.logout)
 
-module.exports = router
+export default router
  

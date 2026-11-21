@@ -1,7 +1,7 @@
-require("dotenv").config()
-const express = require("express")
-const cors = require("cors")
-const { apiResponse } = require("./utils/response/apiRes")
+import "dotenv/config"
+import express from "express"
+import cors from "cors"
+import { apiResponse } from "./utils/response/apiRes.js"
 
 const app = express()
 
@@ -23,15 +23,15 @@ app.use((req, res, next) => {
 })
 
 // Rotas de autenticação
-const authRoutes = require("./modules/users/auth/auth.routes")
+import authRoutes from "./modules/users/auth/auth.routes.js"
 app.use("/auth", authRoutes)
 
 //Rotas de agendamentos/agenda
-const agendaRoutes = require("./modules/agendamentos/agenda.routes")
+import agendaRoutes from "./modules/agendamentos/agenda.routes.js"
 app.use("/agendamento", agendaRoutes)
 
 
-const notFound = require("./middlewares/notFound.middleware")
+import notFound from "./middlewares/notFound.middleware.js"
 app.use(notFound)
 
-module.exports = app
+export default app

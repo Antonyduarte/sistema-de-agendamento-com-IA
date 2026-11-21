@@ -1,7 +1,7 @@
-const registerRepo = require("./register.respository")
-const bcrypt = require("bcrypt")
-const responses = require("../../../utils/response/apiRes")
-const {MESSAGES} = require("../../../messages/messages")
+import * as registerRepo from "./register.respository.js"
+import bcrypt from "bcrypt"
+import * as responses from "../../../utils/response/apiRes.js"
+import { MESSAGES } from "../../../messages/messages.js"
 
 async function userRegister(nome, email, senha) {
 
@@ -18,4 +18,4 @@ async function userRegister(nome, email, senha) {
     return responses.apiResponse(true, "Conta registrada com sucesso")
 }
 
-module.exports = userRegister
+export default userRegister

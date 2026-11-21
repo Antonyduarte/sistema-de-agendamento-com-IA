@@ -1,6 +1,6 @@
-const refreshService = require("./refresh.service")
-const apiRes = require("../../../utils/response/apiRes")
-const { MESSAGES } = require("../../../messages/messages")
+import refreshService from "./refresh.service.js"
+import * as apiRes from "../../../utils/response/apiRes.js"
+import { MESSAGES } from "../../../messages/messages.js"
 
 // Esta rota não usa authMiddleware: ela precisa funcionar quando o access
 // token já expirou. A autenticação desta operação é o próprio refresh token.
@@ -67,7 +67,7 @@ async function logout(req, res) {
     }
 }
 
-module.exports = {
+export default {
     refreshAccessToken,
     logout
 }

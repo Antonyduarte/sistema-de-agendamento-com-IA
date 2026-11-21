@@ -1,5 +1,5 @@
-const express = require("express")
-const { apiResponse } = require("../utils/response/apiRes")
+import express from "express"
+import { apiResponse } from "../utils/response/apiRes.js"
 const router = express.Router()
 
 function pageNotFound(req, res, next) {
@@ -9,4 +9,4 @@ function pageNotFound(req, res, next) {
     ))
 }
 
-module.exports = pageNotFound
+export default pageNotFound

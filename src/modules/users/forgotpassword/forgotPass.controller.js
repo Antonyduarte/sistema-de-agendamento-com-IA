@@ -1,7 +1,7 @@
-const { MESSAGES } = require("../../../messages/messages")
-const { apiResponse } = require("../../../utils/response/apiRes")
-const { EMAIL_REGEX } = require("../../../utils/regex/regex")
-const forgotService = require("./forgotPass.service")
+import { MESSAGES } from "../../../messages/messages.js"
+import { apiResponse } from "../../../utils/response/apiRes.js"
+import { EMAIL_REGEX } from "../../../utils/regex/regex.js"
+import * as forgotService from "./forgotPass.service.js"
 
 async function recoveryCode(req, res) {
 
@@ -29,4 +29,4 @@ async function recoveryCode(req, res) {
     }
 }
    
-module.exports = { recoveryCode }
+export { recoveryCode }

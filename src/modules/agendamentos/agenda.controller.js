@@ -1,7 +1,7 @@
-const apiRes = require("../../utils/response/apiRes")
-const agendaService = require("./agenda.service")
-const { MESSAGES } = require("../../messages/messages")
-const { HORA_REGEX, DATA_REGEX } = require("../../utils/regex/regex")
+import * as apiRes from "../../utils/response/apiRes.js"
+import agendaService from "./agenda.service.js"
+import { MESSAGES } from "../../messages/messages.js"
+import { HORA_REGEX, DATA_REGEX } from "../../utils/regex/regex.js"
 
 async function agendar(req, res) {
     const { compromisso, data, hora } = req.body
@@ -244,7 +244,7 @@ async function admDeleteAgenda(req, res) {
 }
 
 
-module.exports = {
+export default {
     agendar,
     getHorariosDisponiveis,
     getAgenda,

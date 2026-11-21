@@ -1,10 +1,10 @@
-const express = require("express")
+import express from "express"
 const router = express.Router()
 
-const authMiddleware = require("../../middlewares/auth.middleware")
-const adminMiddleware = require("../../middlewares/admin.middleware")
+import authMiddleware from "../../middlewares/auth.middleware.js"
+import adminMiddleware from "../../middlewares/admin.middleware.js"
 
-const agendaController = require("./agenda.controller")
+import agendaController from "./agenda.controller.js"
 
 // Rota pública: mostra somente os horários que podem ser reservados.
 router.get("/disponiveis", agendaController.getHorariosDisponiveis)
@@ -19,4 +19,4 @@ router.put("/", authMiddleware, agendaController.editAgenda) //PUT EDITAR AGENDA
 router.get("/admin", authMiddleware, adminMiddleware, agendaController.getAllAgenda)
 router.delete("/admin/delete/:id", authMiddleware, adminMiddleware, agendaController.admDeleteAgenda)
 
-module.exports = router
+export default router

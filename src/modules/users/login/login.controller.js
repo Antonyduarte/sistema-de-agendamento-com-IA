@@ -1,6 +1,6 @@
-const loginService = require("./login.service")
-const apiRes = require("../../../utils/response/apiRes")
-const { MESSAGES } = require("../../../messages/messages")
+import loginService from "./login.service.js"
+import * as apiRes from "../../../utils/response/apiRes.js"
+import { MESSAGES } from "../../../messages/messages.js"
 
 async function login(req, res) {
     try {
@@ -46,4 +46,4 @@ async function login(req, res) {
     }
 }
 
-module.exports = login
+export default login

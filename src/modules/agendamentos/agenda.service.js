@@ -1,5 +1,5 @@
-const agendaRepo = require("./agenda.repository")
-const { MESSAGES } = require("../../messages/messages")
+import agendaRepo from "./agenda.repository.js"
+import { MESSAGES } from "../../messages/messages.js"
 
 // Dois agendamentos, mesmo de usuarios diferentes, precisam ter este intervalo.
 const intervalo = 35
@@ -93,7 +93,7 @@ async function expireAppointments() {
     return true
 }
 
-module.exports = { 
+export default {
     agendar, 
     getHorariosDisponiveis, 
     getAgenda, 

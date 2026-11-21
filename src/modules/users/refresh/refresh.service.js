@@ -1,8 +1,8 @@
-const refreshRepo = require("./refresh.repository")
-const crypto = require("crypto")
-const jwt = require("jsonwebtoken")
-const bcrypt = require("bcrypt")
-const { MESSAGES } = require("../../../messages/messages")
+import refreshRepo from "./refresh.repository.js"
+import crypto from "crypto"
+import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt"
+import { MESSAGES } from "../../../messages/messages.js"
 
 function generateRefreshToken() {
     return crypto.randomBytes(64).toString("hex")
@@ -91,7 +91,7 @@ async function revokeRefreshToken(token) {
     }
 }
 
-module.exports = {
+export default {
     createRefreshToken,
     refreshAccessToken,
     revokeRefreshToken

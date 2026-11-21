@@ -1,6 +1,6 @@
-const registerService = require("./register.service")
-const apiRes = require("../../../utils/response/apiRes")
-const { MESSAGES } = require("../../../messages/messages")
+import registerService from "./register.service.js"
+import * as apiRes from "../../../utils/response/apiRes.js"
+import { MESSAGES } from "../../../messages/messages.js"
 
 async function register(req, res) {
     try {
@@ -32,4 +32,4 @@ async function register(req, res) {
     }
 }
 
-module.exports = register
+export default register

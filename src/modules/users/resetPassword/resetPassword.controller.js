@@ -1,6 +1,6 @@
-const resetService = require("./resetPassword.service")
-const apiRes = require("../../../utils/response/apiRes")
-const {MESSAGES} = require("../../../messages/messages")
+import resetService from "./resetPassword.service.js"
+import * as apiRes from "../../../utils/response/apiRes.js"
+import { MESSAGES } from "../../../messages/messages.js"
 
 async function setPassword(req, res) {
     try {
@@ -32,4 +32,4 @@ async function setPassword(req, res) {
 
 }
 
-module.exports = { setPassword }
+export default { setPassword }

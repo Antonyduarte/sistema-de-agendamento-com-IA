@@ -1,6 +1,6 @@
-const mysql = require("mysql2")
-const pool = require("../../config/db/db")
-const { MESSAGES } = require("../../messages/messages")
+import mysql from "mysql2"
+import pool from "../../config/db/db.js"
+import { MESSAGES } from "../../messages/messages.js"
 
 const connection = pool
 
@@ -165,7 +165,7 @@ async function updateStatus() {
 
 }
 
-module.exports = {
+export default {
     agendar,
     horarioVerify,
     getAgenda,

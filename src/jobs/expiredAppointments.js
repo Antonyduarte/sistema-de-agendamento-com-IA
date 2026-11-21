@@ -1,4 +1,4 @@
-const service = require("../modules/agendamentos/agenda.service")
+import service from "../modules/agendamentos/agenda.service.js"
 
 //Atualiza a cada minuto, os status dos agendamentos
 async function expiredAppointments() {
@@ -8,4 +8,4 @@ async function expiredAppointments() {
     }, 60000);
 }
 
-module.exports = { expiredAppointments }
+export { expiredAppointments }

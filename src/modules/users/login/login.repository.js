@@ -1,5 +1,5 @@
-const mysql = require("mysql2")
-const pool = require("../../../config/db/db")
+import mysql from "mysql2"
+import pool from "../../../config/db/db.js"
 
 const connection = pool
 
@@ -20,4 +20,4 @@ async function login(email) {
     return result[0] || null
 }
 
-module.exports = { findByEmail, login }
+export { findByEmail, login }

@@ -1,4 +1,4 @@
-const pool = require("../../../config/db/db")
+import pool from "../../../config/db/db.js"
 
 const connection = pool
 
@@ -42,7 +42,7 @@ async function deleteRefreshTokenById(id) {
     return result
 }
 
-module.exports = {
+export default {
     getRefreshTokens,
     getUserById,
     saveRefreshToken,

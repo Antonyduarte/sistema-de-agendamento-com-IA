@@ -1,9 +1,9 @@
-require("dotenv").config()
-const loginRepo = require("./login.repository")
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
-const { MESSAGES } = require("../../../messages/messages")
-const refreshService = require("../refresh/refresh.service")
+import "dotenv/config"
+import * as loginRepo from "./login.repository.js"
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+import { MESSAGES } from "../../../messages/messages.js"
+import refreshService from "../refresh/refresh.service.js"
 
 async function userLogin(email, senha) {
 
@@ -44,4 +44,4 @@ async function userLogin(email, senha) {
     }
 }
 
-module.exports = userLogin
+export default userLogin

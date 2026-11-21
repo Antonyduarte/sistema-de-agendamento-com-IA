@@ -1,5 +1,5 @@
-const mysql = require("mysql2")
-const pool = require("../../../config/db/db")
+import mysql from "mysql2"
+import pool from "../../../config/db/db.js"
 
 const connection = pool
 
@@ -27,4 +27,4 @@ async function recoveryCode(user_id, code_hash) {
     return result
 }
 
-module.exports = { recoveryCode, userEmail }
+export { recoveryCode, userEmail }

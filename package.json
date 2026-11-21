@@ -1,4 +1,12 @@
 {
+  "name": "Temply",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "src/serve.js",
+  "scripts": {
+    "dev":"node --watch src/server.js"
+  },
+
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",

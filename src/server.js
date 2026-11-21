@@ -1,6 +1,6 @@
-require("dotenv").config()
-const app = require("./app")
-const job = require("./jobs/expiredAppointments")
+import "dotenv/config"
+import app from "./app.js"
+import "./jobs/expiredAppointments.js"
 
 const PORT = process.env.SERVER_PORT || 3000
 

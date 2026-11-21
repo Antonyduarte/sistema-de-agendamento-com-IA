@@ -15,4 +15,4 @@ function apiResponse(success, message, data = null) {
 //     }
 // }
 
-module.exports = { apiResponse }
+export { apiResponse }

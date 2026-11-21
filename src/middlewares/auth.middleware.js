@@ -1,6 +1,6 @@
-require("dotenv").config()
-const jwt = require("jsonwebtoken")
-const apiRes = require("../utils/response/apiRes")
+import "dotenv/config"
+import jwt from "jsonwebtoken"
+import * as apiRes from "../utils/response/apiRes.js"
 
 function authMiddleware(req, res, next) {
     const authHeader = req.headers.authorization
@@ -45,4 +45,4 @@ function authMiddleware(req, res, next) {
     }
 }
 
-module.exports = authMiddleware
+export default authMiddleware

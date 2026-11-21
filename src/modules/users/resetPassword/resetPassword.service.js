@@ -1,8 +1,8 @@
-require("dotenv").config()
-const bcrypt = require("bcrypt")
-const { MESSAGES } = require("../../../messages/messages");
-const resetRepo = require("./resetPassword.repository")
-const REGEX = require("../../../utils/regex/regex")
+import "dotenv/config"
+import bcrypt from "bcrypt"
+import { MESSAGES } from "../../../messages/messages.js"
+import * as resetRepo from "./resetPassword.repository.js"
+import * as REGEX from "../../../utils/regex/regex.js"
 
 async function resetPassword(email, code, password) {
     if (!email || !code || !password) {
@@ -39,4 +39,4 @@ async function resetPassword(email, code, password) {
     return true
 }
 
-module.exports = {resetPassword}
+export default { resetPassword }
